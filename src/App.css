@@ -68,7 +68,7 @@ body,
 /* search page */
 
 .search-books-bar {
-  position: fixed;
+  /* position: fixed; */
   width: 100%;
   top: 0;
   left: 0;
@@ -136,6 +136,15 @@ body,
   color: #999;
 }
 
+.book-authors ul{
+  list-style-type: none;
+  padding: 0;
+}
+
+.book-authors li{
+  padding: 0;
+}
+
 .book-top {
   position: relative;
   height: 200px;
@@ -168,7 +177,10 @@ body,
 
 .book-cover {
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-  background: #eee;
+  background: black;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 128px 193px;
 }
 .book-cover-title {
   padding: 20px 10px 0;
