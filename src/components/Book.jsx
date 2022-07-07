@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { useDrag } from "react-dnd";
 import * as conf from "../conf";
 
 export default function Book({ book, onUpdateBook }) {
@@ -13,8 +13,26 @@ export default function Book({ book, onUpdateBook }) {
 		setShelf(shelf);
 		onUpdateBook(updatedBook);
 	};
+
+	const [{ isDragging }, drag] = useDrag(() => ({
+		type: conf.DND.type,
+		item: { title: book.title, id: book.id, shelf: book.shelf },
+		end: (item, monitor) => {
+			const dropResult = monitor.getDropResult();
+			if (item && dropResult) {
+				if (item.shelf !== dropResult.id) {
+					handleChangeshelf(item, dropResult.id);
+				}
+			}
+		},
+		collect: (monitor) => ({
+			isDragging: monitor.isDragging(),
+			handlerId: monitor.getHandlerId(),
+		}),
+	}));
+	const opacity = isDragging ? 0.4 : 1;
 	return (
-		<div className="book">
+		<div ref={drag} className="book" style={{ opacity }}>
 			<div className="book-top">
 				<div
 					className="book-cover"

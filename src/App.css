@@ -42,6 +42,15 @@ body,
 .bookshelf-title {
   border-bottom: 1px solid #dedede;
 }
+
+.bookshelf .active {
+  border: 5px solid grey;
+}
+
+.bookshelf .inactive {
+  padding: 5px;
+}
+
 .bookshelf-books {
   text-align: center;
 }

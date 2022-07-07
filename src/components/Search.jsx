@@ -1,6 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 import Bookgrid from "./Bookgrid";
 import * as api from "../BooksAPI";
@@ -33,34 +35,42 @@ export default function Search({ onUpdateBook, books }) {
 		}
 	};
 
-	const handleOnEsc = (event) => {
-		if (event.key === "Escape") navigate(conf.PATHS.list);
-	};
+	useEffect(() => {
+		const handleOnEsc = (event) => {
+			if (event.key === "Escape") navigate(conf.PATHS.list);
+		};
+		document.addEventListener("keyup", handleOnEsc);
+		return () => {
+			document.removeEventListener("keyup", handleOnEsc);
+		};
+	}, [navigate]);
 
 	return (
-		<div className="search-books">
-			<div className="search-books-bar">
-				<Link className="close-search" to={conf.PATHS.list}>
-					Close
-				</Link>
-				<div className="search-books-input-wrapper">
-					<input
-						id={SEARCH_INPUT}
-						autoFocus={true}
-						type="text"
-						placeholder="Search by title, author, or ISBN"
-						value={search}
-						onChange={handleOnChange}
-						onKeyUp={handleOnEsc}
-					/>
+		<DndProvider backend={HTML5Backend}>
+			<div className="search-books">
+				<div className="search-books-bar">
+					<Link className="close-search" to={conf.PATHS.list}>
+						Close
+					</Link>
+
+					<div className="search-books-input-wrapper">
+						<input
+							id={SEARCH_INPUT}
+							autoFocus={true}
+							type="text"
+							placeholder="Search by title, author, or ISBN"
+							value={search}
+							onChange={handleOnChange}
+						/>
+					</div>
 				</div>
+				<Bookgrid
+					className="search-books-results"
+					books={results.map(updateBookshelf)}
+					onUpdateBook={onUpdateBook}
+				/>
+				{/* {console.log(results)} */}
 			</div>
-			<Bookgrid
-				className="search-books-results"
-				books={results.map(updateBookshelf)}
-				onUpdateBook={onUpdateBook}
-			/>
-			{/* {console.log(results)} */}
-		</div>
+		</DndProvider>
 	);
 }
