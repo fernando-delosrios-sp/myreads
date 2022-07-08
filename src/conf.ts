@@ -1,4 +1,8 @@
-export const shelves = {
+type Shelves = {
+    [key: string]: string
+}
+
+export const shelves: Shelves = {
     currentlyReading: "Currently reading",
     wantToRead: "Want to Read",
     read: "Read",
